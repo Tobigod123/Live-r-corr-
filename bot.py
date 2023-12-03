@@ -57,8 +57,11 @@ def playback(update, context):
         recording_id = context.args[0] if context.args else None
         if recording_id:
             # Fetch the video file based on recording_id
-            video_path = f"recordings/{recording_id}.mp4"  # Replace with actual file path
-            context.bot.send_video(chat_id=update.effective_chat.id, video=open(video_path, 'rb'))
+            video_path = f"recordings/{recording_id}.mp4"
+            if os.path.exists(video_path):
+                context.bot.send_video(chat_id=update.effective_chat.id, video=open(video_path, 'rb'))
+            else:
+                context.bot.send_message(chat_id=update.effective_chat.id, text="The recorded video does not exist.")
         else:
             context.bot.send_message(chat_id=update.effective_chat.id, text="Please provide a valid recording ID.")
     except Exception as e:
