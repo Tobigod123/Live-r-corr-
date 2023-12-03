@@ -7,7 +7,7 @@ import os
 from datetime import datetime, timedelta
 
 # Telegram bot token
-TOKEN = '6528532477:AAHFq0__YlXujX6HwzwFdioAtiNJ-Dc9YqY'
+TOKEN = '6528532477:AAHCLp8krmcep32fwhpo_UDiaQepzOYtB78'
 
 # List of authorized user IDs
 AUTHORIZED_IDS = [6748415360]  # Replace with your authorized user IDs
