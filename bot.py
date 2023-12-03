@@ -103,17 +103,16 @@ def record(update, context):
         context.bot.send_message(chat_id=update.effective_chat.id, text="Invalid arguments. Please check your input and try again.")
 
     except subprocess.CalledProcessError as e:
-        # Handle FFMPEG execution error
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error during FFMPEG execution: {str(e)}")
+    # Log the FFMPEG error details
+    logging.error(f"FFMPEG error: {e}")
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"An error occurred during FFMPEG execution: {str(e)}")
 
-    except Exception as e:
-        # Log the exception
-        logging.error(f"An error occurred: {e}")
+except Exception as e:
+    # Log the exception
+    logging.error(f"An error occurred: {e}")
 
-        # Handle other exceptions
-        context.bot.send_message(chat_id=update.effective_chat.id, text="An error occurred while processing your request. Please try again later.")
-
-# ...
+    # Send a more informative error message to the user
+    context.bot.send_message(chat_id=update.effective_chat.id, text=f"An unexpected error occurred: {str(e)}")
 
 # Create an instance of the Telegram updater
 updater = Updater(token=TOKEN, use_context=True)
