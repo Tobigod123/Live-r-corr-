@@ -78,6 +78,9 @@ def record(update, context):
             context.bot.send_message(chat_id=update.effective_chat.id, text="Sorry, you are not authorized to use this bot.")
             return
 
+        # Create 'recordings' directory if it doesn't exist
+        os.makedirs('recordings', exist_ok=True)
+
         # Parse command arguments using argparse
         parser = argparse.ArgumentParser(description='Advanced IPTV Recorder Bot')
         parser.add_argument('iptv_link', help='IPTV link to record')
@@ -86,17 +89,18 @@ def record(update, context):
         args = parser.parse_args(context.args)
 
         # Perform the live recording using FFMPEG with advanced settings
+        output_file = f'recordings/{user_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.mp4'
         subprocess.run(['ffmpeg', '-i', args.iptv_link, '-ss', args.start_time, '-to', args.end_time,
                         '-c:v', 'libx264', '-preset', 'veryfast', '-metadata', 'title=World famous cartoon',
-                        '-c:a', 'aac', '-b:a', '50k', f'recordings/{user_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.mp4'])
+                        '-c:a', 'aac', '-b:a', '50k', output_file])
 
         # Check file size before sending
-        file_size = os.path.getsize(f'recordings/{user_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.mp4')
+        file_size = os.path.getsize(output_file)
         if file_size > 2 * 1024 * 1024 * 1024:  # 2 GB limit for non-bot users
             context.bot.send_message(chat_id=update.effective_chat.id, text="The recorded video exceeds the maximum file size limit.")
         else:
             # Send the recorded video file to the user
-            context.bot.send_video(chat_id=update.effective_chat.id, video=open(f'recordings/{user_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.mp4', 'rb'))
+            context.bot.send_video(chat_id=update.effective_chat.id, video=open(output_file, 'rb'))
 
     except argparse.ArgumentError:
         # Handle argument parsing error
