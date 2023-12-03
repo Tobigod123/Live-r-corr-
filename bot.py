@@ -1,16 +1,16 @@
 import telegram
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram.ext import Updater, CommandHandler
 import subprocess
 import logging
 import argparse
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 # Telegram bot token
-TOKEN = '6528532477:AAHCLp8krmcep32fwhpo_UDiaQepzOYtB78'
+TOKEN = 'YOUR_BOT_TOKEN'
 
 # List of authorized user IDs
-AUTHORIZED_IDS = [6748415360]  # Replace with your authorized user IDs
+AUTHORIZED_IDS = [YOUR_AUTHORIZED_USER_IDS]
 
 # Initialize the Telegram bot
 bot = telegram.Bot(token=TOKEN)
@@ -45,14 +45,15 @@ def record(update, context):
 
         # Create 'recordings' directory if it doesn't exist
         if not os.path.exists('recordings'):
-          os.makedirs('recordings')
+            os.makedirs('recordings')
 
-        # Parse command arguments using argparse
+        # Parse command arguments from message text
+        command_args = update.message.text.split()[1:]
         parser = argparse.ArgumentParser(description='Advanced IPTV Recorder Bot')
         parser.add_argument('iptv_link', help='IPTV link to record')
         parser.add_argument('start_time', help='Start time for recording')
         parser.add_argument('end_time', help='End time for recording')
-        args = parser.parse_args(context.args)
+        args = parser.parse_args(command_args)
 
         # Perform the live recording using FFMPEG with advanced settings
         output_file = f'recordings/{user_id}_{datetime.now().strftime("%Y%m%d%H%M%S")}.mp4'
