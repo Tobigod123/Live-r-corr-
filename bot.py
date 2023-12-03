@@ -7,10 +7,10 @@ import os
 from datetime import datetime, timedelta
 
 # Telegram bot token
-TOKEN = 'your_telegram_bot_token'
+TOKEN = '6528532477:AAHFq0__YlXujX6HwzwFdioAtiNJ-Dc9YqY'
 
 # List of authorized user IDs
-AUTHORIZED_IDS = [123456789, 987654321]  # Replace with your authorized user IDs
+AUTHORIZED_IDS = [6748415360]  # Replace with your authorized user IDs
 
 # Initialize the Telegram bot
 bot = telegram.Bot(token=TOKEN)
