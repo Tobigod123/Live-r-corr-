@@ -30,47 +30,9 @@ def help_command(update, context):
     Commands:
     /start - Start the bot
     /record <iptv_link> <start_time> <end_time> - Record IPTV stream
-    /list_recordings - List your recorded videos
-    /playback <recording_id> - Play a recorded video
-    /settings - Configure bot settings
     /help - Show this help message
     """
     context.bot.send_message(chat_id=update.effective_chat.id, text=help_text)
-
-# Define the list recordings command handler
-def list_recordings(update, context):
-    # Implement logic to fetch and display user's recorded videos
-    recordings_list = []  # Replace with actual list of recordings
-    if recordings_list:
-        message = "Your recorded videos:\n"
-        for recording in recordings_list:
-            message += f"{recording['id']}: {recording['title']} - {recording['duration']}\n"
-    else:
-        message = "No recorded videos available."
-
-    context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-
-# Define the playback command handler
-def playback(update, context):
-    try:
-        # Implement logic to retrieve and send the recorded video for playback
-        recording_id = context.args[0] if context.args else None
-        if recording_id:
-            # Fetch the video file based on recording_id
-            video_path = f"recordings/{recording_id}.mp4"
-            if os.path.exists(video_path):
-                context.bot.send_video(chat_id=update.effective_chat.id, video=open(video_path, 'rb'))
-            else:
-                context.bot.send_message(chat_id=update.effective_chat.id, text="The recorded video does not exist.")
-        else:
-            context.bot.send_message(chat_id=update.effective_chat.id, text="Please provide a valid recording ID.")
-    except Exception as e:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f"Error during playback: {str(e)}")
-
-# Define the settings command handler
-def settings(update, context):
-    # Implement logic to allow users to configure bot settings
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Settings configuration is not implemented yet.")
 
 # Define the record command handler
 def record(update, context):
@@ -136,17 +98,6 @@ dispatcher.add_handler(CommandHandler('help', help_command))
 
 # Register the record command handler
 dispatcher.add_handler(CommandHandler('record', record))
-
-# Register the list recordings command handler
-dispatcher.add_handler(CommandHandler('list_recordings', list_recordings))
-
-# Register the playback command handler
-dispatcher.add_handler(CommandHandler('playback', playback))
-
-# Register the settings command handler
-dispatcher.add_handler(CommandHandler('settings', settings))
-
-# ...
 
 # Start the bot
 updater.start_polling()
