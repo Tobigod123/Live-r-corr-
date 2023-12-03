@@ -79,7 +79,8 @@ def record(update, context):
             return
 
         # Create 'recordings' directory if it doesn't exist
-        os.makedirs('recordings', exist_ok=True)
+        if not os.path.exists('recordings'):
+          os.makedirs('recordings')
 
         # Parse command arguments using argparse
         parser = argparse.ArgumentParser(description='Advanced IPTV Recorder Bot')
