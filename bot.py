@@ -46,6 +46,7 @@ def record(update, context):
         # Create 'recordings' directory if it doesn't exist
         if not os.path.exists('recordings'):
             os.makedirs('recordings')
+            os.mkdir('recordings')
 
         # Parse command arguments from message text
         command_args = update.message.text.split()[1:]
